@@ -17,10 +17,6 @@ return new class extends Migration
                 ->constrained()
                 ->cascadeOnDelete()
                 ->cascadeOnUpdate();
-            $table->foreignIdFor(\App\Models\Post::class)
-                ->constrained()
-                ->cascadeOnDelete()
-                ->cascadeOnUpdate();
             $table->foreignId('parent_id')
                 ->nullable()
                 ->constrained('comments')
