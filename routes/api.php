@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Comment\ParentCommentController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -22,4 +23,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::middleware('guest')->group(function () {
     Route::post('register', [RegisterController::class, 'register']);
+});
+
+Route::group(['prefix' => 'comments'], function () {
+    Route::get('/', [ParentCommentController::class, 'index'])->name('comments.index');
 });
