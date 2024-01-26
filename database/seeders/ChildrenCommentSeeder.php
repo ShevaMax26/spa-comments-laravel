@@ -21,10 +21,17 @@ class ChildrenCommentSeeder extends Seeder
             $number = rand(1,5);
 
             foreach($users->random($number) as $user) {
-                Comment::factory([
+                $childComment = Comment::factory([
                     'user_id' => $user->id,
                     'parent_id' => $comment->id,
                 ])->create();
+
+                if ($childComment->id % 2 === 0) {
+                    Comment::factory([
+                        'user_id' => $comment->user_id,
+                        'parent_id' => $childComment->id,
+                    ])->create();
+                }
             }
         }
     }
