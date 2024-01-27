@@ -1,7 +1,12 @@
-<script setup></script>
+<script setup>
+import Comment from "../Components/Comment.vue";
+import ContentWrapper from "../Components/ContentWrapper.vue";
+</script>
 
 <template>
-        Home page text
+    <ContentWrapper>
+        <Comment></Comment>
+    </ContentWrapper>
 </template>
 
 
