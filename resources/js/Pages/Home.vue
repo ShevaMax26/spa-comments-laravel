@@ -2,6 +2,7 @@
 import Comment from "../Components/Comment.vue";
 import ContentWrapper from "../Components/ContentWrapper.vue";
 import {ref, onMounted} from 'vue'
+import CommentSortableLine from "../Components/CommentSortableLine.vue";
 
 
 const comments = ref([]);
@@ -23,7 +24,7 @@ onMounted(() => {
 
 <template>
     <ContentWrapper>
-
+        <CommentSortableLine></CommentSortableLine>
         <Comment v-for="comment in comments" :comment="comment" :key="comment.id"></Comment>
     </ContentWrapper>
 </template>
