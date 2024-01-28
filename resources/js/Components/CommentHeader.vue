@@ -8,7 +8,7 @@ const { comment } = defineProps(['comment']);
             <div class="text-[30px] mr-1">
                 <i class="fa-regular fa-face-smile"></i>
             </div>
-            <div class="font-extrabold text-[18px]">{{ comment.user_id.name }}</div>
+            <div class="font-extrabold text-[18px]">{{ comment.user.name }}</div>
             <div class="text-[16px]">{{ comment.created_at }}</div>
             <div class="flex gap-2 ml-1">
                 <CommentAction><i class="fa-solid fa-hashtag"></i></CommentAction>

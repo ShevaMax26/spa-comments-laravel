@@ -6,7 +6,7 @@ const { comment } = defineProps(['comment']);
 </script>
 
 <template>
-    <div class="sm:w-[95%] md:w-[90%] lg:w-[80%] mx-auto">
+    <div class="mx-auto">
         <CommentHeader :comment="comment"></CommentHeader>
         <CommentText :comment="comment"></CommentText>
     </div>
