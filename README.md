@@ -1,6 +1,12 @@
+## <h2 style="color:#ba363f">Installation</h2>
+``` 
+    composer install
+    php artisan migrate
+    php artisan db:seed
+```
+
+
 ## Dev tips
-php artisan migrate
-php artisan db:seed
 ```
 docker-compose build --no-cache
 docker-compose up --build --force-recreate --no-deps

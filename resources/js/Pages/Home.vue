@@ -2,7 +2,7 @@
 import Comment from "../Components/Comment.vue";
 import ContentWrapper from "../Components/ContentWrapper.vue";
 import {onMounted, ref} from 'vue'
-import CommentSortableLine from "../Components/CommentSortableLine.vue";
+import SortableItems from "../Components/SortableItems.vue";
 import Pagination from "../Components/Pagination.vue";
 import PerPageItems from "../Components/PerPageItems.vue";
 
@@ -10,18 +10,19 @@ const comments = ref([]);
 const total = ref(0);
 const currentPage = ref(1);
 const currentPerPage = ref(25);
-
-async function getComments(page, perPage) {
+const sort = ref(null);
+const direction = ref(null);
+async function getComments() {
     try {
-        page = page ?? currentPage.value
-        perPage = perPage ?? currentPerPage.value
-        replaceParamInUrl('page', page)
-        replaceParamInUrl('perPage', perPage)
-        const urlParams = new URLSearchParams(window.location.search);
-        setPerPage(parseInt(urlParams.get('perPage')));
-        urlParams.set('perPage', perPage);
-        urlParams.set('page', page);
-        const res = await axios.get(`/api/comments?${urlParams}`);
+        replaceParamInUrl()
+        const res = await axios.get(`/api/comments`, {
+            params: {
+                sort: sort.value,
+                direction: direction.value,
+                page: currentPage.value,
+                perPage: currentPerPage.value,
+            }
+        });
         comments.value = res.data.comments;
         total.value = parseInt(res.data.total);
         currentPerPage.value = parseInt(res.data.perPage);
@@ -33,77 +34,53 @@ async function getComments(page, perPage) {
 }
 
 function changePerPage(perPage) {
-    getComments(1, perPage)
+    currentPage.value = 1;
+    currentPerPage.value = perPage;
+    getComments()
 }
 function showNewPage(page) {
-    getComments(page, currentPerPage.value)
+    currentPage.value = page
+    getComments()
 }
 
-function replaceParamInUrl(paramName, value) {
+function replaceParamInUrl() {
     const currentUrl = new URL(window.location.href);
-    const queryParams = currentUrl.searchParams;
-    queryParams.set(paramName, value);
-    currentUrl.search = queryParams.toString();
+    const params = currentUrl.searchParams;
+    if (sort.value) {
+        params.set('sort', sort.value);
+    }
+    if (direction.value) {
+        params.set('direction', direction.value);
+    }
+    if (currentPage.value) {
+        params.set('page', currentPage.value);
+    }
+    if (currentPerPage.value) {
+        params.set('perPage', currentPerPage.value);
+    }
+
+    currentUrl.search = params.toString();
     const updatedUrl = currentUrl.toString();
     window.history.replaceState({}, '', updatedUrl);
 }
 
-function setPerPage(perPage) {
-    perPageValues.value = perPageValues.value.map(function (item) {
-        if (item.number == perPage) {
-            currentPerPage.value = perPage;
-            item.active = true;
-        } else {
-            item.active = false;
-        }
-        return item;
-    });
-
-    if (!perPageValues.value.filter((item) => item.active == true).length) {
-        perPageValues.value = perPageValues.value.map(function (item) {
-            if (item.number == 25) {
-                currentPerPage.value = 25;
-                item.active = true;
-            } else {
-                item.active = false;
-            }
-            return item;
-        });
-    }
-}
-
-const perPageValues = ref([
-    {
-        number: 5,
-        active: false,
-    },
-    {
-        number: 10,
-        active: false,
-    },
-    {
-        number: 15,
-        active: false,
-    },
-    {
-        number: 25,
-        active: false,
-    },
-    {
-        number: 50,
-        active: false,
-    },
-]);
-
 onMounted(() => {
-    getComments(currentPage.value, currentPerPage.value);
+    getComments();
 });
+
+function applySortField(activeLabel) {
+    sort.value = activeLabel.slug;
+    direction.value = activeLabel.direction;
+    getComments()
+}
 
 </script>
 
 <template>
     <ContentWrapper>
-        <CommentSortableLine/>
+        <SortableItems
+            @sort-changed="applySortField"
+        />
         <Comment v-for="comment in comments" :comment="comment" :key="comment.id"/>
         <div class="flex justify-around">
             <Pagination :current-per-page="currentPerPage"
@@ -112,7 +89,7 @@ onMounted(() => {
                         @show-page="showNewPage"
             />
             <div class="flex gap-2">
-                <PerPageItems :items="perPageValues" @push-per-page="changePerPage"/>
+                <PerPageItems @push-per-page="changePerPage"/>
             </div>
         </div>
     </ContentWrapper>
@@ -122,3 +99,4 @@ onMounted(() => {
 <style scoped>
 
 </style>
+

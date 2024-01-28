@@ -1,0 +1,25 @@
+<script setup>
+
+const props = defineProps({
+    name: String,
+    direction: String,
+    active: {
+        type: Boolean,
+        default: false,
+    },
+    slug: String,
+});
+
+</script>
+<template>
+    <div @click="$emit('clickSortLabel', slug)" class="cursor-pointer">
+        {{ name }}
+        <i v-if="!active" class="fa-solid fa-sort"></i>
+        <i v-if="active && direction == 'asc'" class="fa-solid fa-sort-up"></i>
+        <i v-if="active && direction == 'desc'" class="fa-solid fa-sort-down"></i>
+    </div>
+
+</template>
+<style scoped lang="scss">
+
+</style>
