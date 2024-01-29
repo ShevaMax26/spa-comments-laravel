@@ -11,7 +11,15 @@ class CreateComment
         if (!isset($data['parent_id'])) {
             return Comment::query()->create([
                 'user_id' => auth('sanctum')->user()->id,
-                'message' => $data['message']
+                'message' => $data['message'],
+            ]);
+        }
+        else {
+            $parentComment  = Comment::query()->findOrFail($data['parent_id']);
+
+            return $parentComment->children()->create([
+                'user_id' => auth('sanctum')->user()->id,
+                'message' => $data['message'],
             ]);
         }
     }
