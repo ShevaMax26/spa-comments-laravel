@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\Comment;
 
+use App\Actions\CreateComment;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Comment\StoreRequest;
 use App\Http\Resources\CommentResource;
 use App\Models\Comment;
 use Illuminate\Http\Request;
@@ -41,5 +43,10 @@ class ParentCommentController extends Controller
             'currentPage' => $parentComments->currentPage(),
             'perPage' => $parentComments->perPage(),
         ];
+    }
+
+    public function store(StoreRequest $request)
+    {
+        return CommentResource::make(app(CreateComment::class)->handle($request->validated()));
     }
 }
