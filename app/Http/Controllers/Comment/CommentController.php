@@ -9,7 +9,7 @@ use App\Http\Resources\CommentResource;
 use App\Models\Comment;
 use Illuminate\Http\Request;
 
-class ParentCommentController extends Controller
+class CommentController extends Controller
 {
     public function index(Request $request)
     {
@@ -48,5 +48,10 @@ class ParentCommentController extends Controller
     public function store(StoreRequest $request)
     {
         return CommentResource::make(app(CreateComment::class)->handle($request->validated()));
+    }
+
+    public function answer(Comment $comment)
+    {
+        return CommentResource::collection($comment->children);
     }
 }

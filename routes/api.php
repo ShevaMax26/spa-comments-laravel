@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
-use App\Http\Controllers\Comment\ParentCommentController;
+use App\Http\Controllers\Comment\CommentController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -28,6 +28,7 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::group(['prefix' => 'comments', 'middleware' => 'auth:sanctum'], function () {
-    Route::get('/', [ParentCommentController::class, 'index'])->name('comments.index');
-    Route::post('/', [ParentCommentController::class, 'store'])->name('comments.store');
+    Route::get('/', [CommentController::class, 'index'])->name('comments.index');
+    Route::get('/{comment}', [CommentController::class, 'answer'])->name('comments.answer');
+    Route::post('/', [CommentController::class, 'store'])->name('comments.store');
 });

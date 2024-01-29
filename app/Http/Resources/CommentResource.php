@@ -18,7 +18,7 @@ class CommentResource extends JsonResource
         return [
             'id' => $this->id,
             'user' => new UserResource($this->whenLoaded('user')),
-            'parent_id' => $this->parent,
+            'parent_id' => $this->parent->id ?? $this->parent,
             'message' => $this->message,
             'created_at' => Carbon::parse($this->created_at)->format('d.m.y в H:i'),
         ];
