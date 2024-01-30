@@ -27,8 +27,8 @@ Route::middleware('guest')->group(function () {
     Route::post('login', [LoginController::class, 'login'])->name('login');
 });
 
-Route::group(['prefix' => 'comments', 'middleware' => 'auth:sanctum'], function () {
+Route::group(['prefix' => 'comments'], function () {
     Route::get('/', [CommentController::class, 'index'])->name('comments.index');
     Route::get('/{comment}', [CommentController::class, 'answer'])->name('comments.answer');
-    Route::post('/', [CommentController::class, 'store'])->name('comments.store');
+    Route::post('/', [CommentController::class, 'store'])->middleware('auth:sanctum')->name('comments.store');
 });

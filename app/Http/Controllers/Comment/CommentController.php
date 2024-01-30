@@ -23,17 +23,13 @@ class CommentController extends Controller
                 'users.name',
                 'users.email',
             )
-                ->join('users', 'users.id', '=', 'comments.user_id')
-                ->orderBy(
-                    $request->get('sort', $request->get('sort')),
-                    $request->get('direction', $request->get('direction'))
-                );
-        } else {
-            $q->orderBy(
-                $request->get('sort', $request->get('sort', 'created_at')),
-                $request->get('direction', $request->get('direction', 'desc'))
-            );
+                ->join('users', 'users.id', '=', 'comments.user_id');
         }
+
+        $q->orderBy(
+            $request->get('sort', $request->get('sort', 'created_at')),
+            $request->get('direction', $request->get('direction', 'desc'))
+        );
 
         $parentComments = $q->paginate($request->get('perPage', 25));
 
