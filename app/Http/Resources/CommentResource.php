@@ -23,7 +23,7 @@ class CommentResource extends JsonResource
             'user' => new UserResource($this->whenLoaded('user')),
             'parent_id' => $this->parent->id ?? $this->parent,
             'message' => $this->message,
-            'image' => $image ? $image->getUrl() : null,
+            'image' => $image ? $image->getFullUrl('thumb') : null,
             'text_file' => $textFile ? $textFile->getUrl() : null,
             'created_at' => Carbon::parse($this->created_at)->format('d.m.y в H:i'),
         ];
