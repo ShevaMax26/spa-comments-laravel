@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class Comment extends Model implements HasMedia
 {
@@ -32,5 +33,13 @@ class Comment extends Model implements HasMedia
     public function parent(): BelongsTo
     {
         return $this->belongsTo(Comment::class, 'parent_id');
+    }
+
+    public function registerMediaConversions(Media $media = null): void
+    {
+        $this->addMediaConversion('thumb')
+            ->width(320)
+            ->height(240)
+            ->queued();
     }
 }
