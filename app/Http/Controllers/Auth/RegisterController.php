@@ -22,7 +22,7 @@ class RegisterController extends Controller
             'password' => bcrypt($data['password'])
         ]);
 
-        $token = $user->createToken('apiToken')->plainTextToken;
+        $token = $user->createToken('token')->plainTextToken;
 
         $res = [
             'user' => $user,

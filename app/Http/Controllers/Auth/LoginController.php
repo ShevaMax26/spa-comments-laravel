@@ -22,7 +22,7 @@ class LoginController extends Controller
             'password' => ['required'],
         ]);
 
-        $user = User::where('email', $request->email)->first();
+        $user = User::query()->where('email', $request->email)->first();
 
         if (!$user || !Hash::check($request->password, $user->password)) {
             throw ValidationException::withMessages([
@@ -31,7 +31,7 @@ class LoginController extends Controller
         }
 
         return response()->json([
-            'token' => $user->createToken($request->email)->plainTextToken,
+            'token' => $user->createToken('token')->plainTextToken,
         ]);
     }
 
