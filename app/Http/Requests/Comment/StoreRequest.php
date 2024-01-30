@@ -24,6 +24,19 @@ class StoreRequest extends FormRequest
         return [
             'parent_id' => ['nullable', 'integer', 'exists:comments,id'],
             'message' => ['required', 'string'],
+            'image' => [
+                'nullable',
+                'file',
+                'image',
+                'max:10000',
+                'mimes:jpeg,png,gif'
+            ],
+            'text_file' => [
+                'nullable',
+                'file',
+                'max:100',
+                'mimes:txt',
+            ],
         ];
     }
 }

@@ -15,11 +15,16 @@ class CommentResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        $image = $this->getMedia('images')->first();
+        $textFile = $this->getMedia('text_files')->first();
+
         return [
             'id' => $this->id,
             'user' => new UserResource($this->whenLoaded('user')),
             'parent_id' => $this->parent->id ?? $this->parent,
             'message' => $this->message,
+            'image' => $image ? $image->getUrl() : null,
+            'text_file' => $textFile ? $textFile->getUrl() : null,
             'created_at' => Carbon::parse($this->created_at)->format('d.m.y в H:i'),
         ];
     }

@@ -17,10 +17,19 @@ class CreateComment
         else {
             $parentComment  = Comment::query()->findOrFail($data['parent_id']);
 
-            return $parentComment->children()->create([
+            $childrenComment = $parentComment->children()->create([
                 'user_id' => auth('sanctum')->user()->id,
                 'message' => $data['message'],
             ]);
+
+            if (isset($data['image'])) {
+                $childrenComment->addMedia($data['image'])->toMediaCollection('images');
+            }
+            if (isset($data['text_file'])) {
+                $childrenComment->addMedia($data['text_file'])->toMediaCollection('text_files');
+            }
+
+            return $childrenComment;
         }
     }
 }
