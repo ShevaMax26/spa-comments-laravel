@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -22,12 +23,9 @@ class RegisterController extends Controller
             'password' => bcrypt($data['password'])
         ]);
 
-        $token = $user->createToken('token')->plainTextToken;
-
-        $res = [
-            'user' => $user,
-            'token' => $token
-        ];
-        return response($res, 201);
+        return response([
+            'user' => UserResource::make($user),
+            'token' => $user->createToken('token')->plainTextToken
+        ], 201);
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -30,9 +31,10 @@ class LoginController extends Controller
             ]);
         }
 
-        return response()->json([
-            'token' => $user->createToken('token')->plainTextToken,
-        ]);
+        return response([
+            'user' => UserResource::make($user),
+            'token' => $user->createToken('token')->plainTextToken
+        ], 201);
     }
 
     public function logout()

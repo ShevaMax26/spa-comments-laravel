@@ -25,6 +25,8 @@ class CommentResource extends JsonResource
             'message' => $this->message,
             'image' => $image ? $image->getFullUrl('thumb') : null,
             'text_file' => $textFile ? $textFile->getUrl() : null,
+            'children_count' => (int)$this->children_count ?? 0,
+            'children' => CommentResource::collection($this->whenLoaded('children')),
             'created_at' => Carbon::parse($this->created_at)->format('d.m.y в H:i'),
         ];
     }
