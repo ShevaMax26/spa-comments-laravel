@@ -27,14 +27,6 @@ services:
         container_name: ${APP_NAME}_app
         restart: unless-stopped
 
-    search:
-        container_name: ${APP_NAME}_elasticsearch
-        image: elasticsearch:7.17.15
-        ports:
-            - "6201:9200"
-        environment:
-            - discovery.type=single-node
-        restart: unless-stopped
     db:
         image: mysql:8.0
         container_name: ${DB_HOST}
@@ -47,16 +39,10 @@ services:
             MYSQL_DATABASE: ${DB_DATABASE}
             MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
         restart: always
-#        restart: unless-stopped
 
-#    db:
-#        image: postgres:14-alpine
-#        environment:
-#            POSTGRES_USER: ${DB_USERNAME}
-#            POSTGRES_PASSWORD: ${DB_PASSWORD}
-#            POSTGRES_DB: ${DB_DATABASE}
-#        volumes:
-#            - ./postgres_data:/var/lib/postgresql/data/
-#        ports:
-#            - "5433:5432"
-#        container_name: ${APP_NAME}_db
+    mailhog:
+        image: mailhog/mailhog
+        ports:
+            - "8025:8025"  # порт для веб-інтерфейсу MailHog
+            - "1025:1025"  # порт для SMTP-сервера MailHog
+        container_name: ${APP_NAME}_mailhog
