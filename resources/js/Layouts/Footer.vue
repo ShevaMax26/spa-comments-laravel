@@ -1,7 +1,7 @@
 <script setup>
-import SocialIcon from "../Components/SocialIcon.vue";
-import SocialIcons from "../Components/SocialIcons.vue";
-import RedApplicationLogo from "../Components/RedApplicationLogo.vue";</script>
+import SocialIcon from "@/Components/SocialIcon.vue";
+import SocialIcons from "@/Components/SocialIcons.vue";
+import RedApplicationLogo from "@/Components/RedApplicationLogo.vue";</script>
 
 <template>
     <footer class="footer w-full bottom-0 pb-4 pt-4 bg-slate-900 text-white">

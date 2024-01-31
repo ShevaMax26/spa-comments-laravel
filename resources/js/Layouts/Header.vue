@@ -1,22 +1,21 @@
 <script setup>
-import ApplicationLogo from '../Components/ApplicationLogo.vue';
-import Dropdown from "../Components/Dropdown.vue";
-import DropdownLink from "../Components/DropdownLink.vue";
-import NavLink from "../Components/NavLink.vue";
-import ResponsiveNavLink from "../Components/ResponsiveNavLink.vue";
-import IconCounter from "../Components/IconCounter.vue";
+import ApplicationLogo from '@/Components/ApplicationLogo.vue';
+import Dropdown from "@/Components/Dropdown.vue";
+import DropdownLink from "@/Components/DropdownLink.vue";
+import NavLink from "@/Components/NavLink.vue";
+import ResponsiveNavLink from "@/Components/ResponsiveNavLink.vue";
+import IconCounter from "@/Components/IconCounter.vue";
 import {ref} from "vue";
+import useRoutes from "@/Сomposables/useRoutes";
+import useAuth from "@/Сomposables/useAuth";
 
-const showingNavigationDropdown = ref(false);
-const activeClass = 'text-blue-500';
+const {isRoute, route, redirectTo, currentRouteName} = useRoutes();
+const {isAuthenticated, authUser, logout} = useAuth();
+const showingNavigationDropdown = ref(isAuthenticated());
 
-function isActive(path) {
-    // return route().current() === path || route().current().includes(path);
-    return true;
-}
-
-function logout() {
-    // this.$inertia.delete(route('logout'))
+const logoutUser = () => {
+    logout();
+    redirectTo(currentRouteName())
 }
 
 </script>
@@ -38,7 +37,7 @@ function logout() {
                         </div>
                         <!-- Navigation Links -->
                         <div class="hidden md:flex md:items-center md:gap-6">
-                            <NavLink href="/"><span class="text-white">Home</span></NavLink>
+                            <NavLink href="/" :active="isRoute('home')"><span class="text-white">Home</span></NavLink>
                             <NavLink href="#"><span class="text-white">Contact us</span></NavLink>
                             <NavLink href="#"><span class="text-white">About</span></NavLink>
                         </div>
@@ -51,7 +50,7 @@ function logout() {
                             </IconCounter>
                         </div>
                         <!-- Settings Dropdown -->
-                        <div v-if="false" class="ml-3 relative">
+                        <div v-if="isAuthenticated()" class="ml-3 relative">
                             <Dropdown align="right" width="48">
                                 <template #trigger>
                                         <span class="inline-flex rounded-md">
@@ -59,7 +58,7 @@ function logout() {
                                                 type="button"
                                                 class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white hover:text-gray focus:outline-none transition ease-in-out duration-150"
                                             >
-                                                Vasia name
+                                                {{ authUser()?.name }}
 
                                                 <svg
                                                     class="ml-2 -mr-0.5 h-4 w-4"
@@ -78,23 +77,23 @@ function logout() {
                                 </template>
 
                                 <template #content>
-                                    <DropdownLink href="profile/edit">Personal cabinet</DropdownLink>
-                                    <DropdownLink href="logout" method="post" as="button">
+                                    <!--                                    <DropdownLink :href="route('home')">Personal cabinet</DropdownLink>-->
+                                    <DropdownLink href="#" method="post" as="button" @click="logoutUser()">
                                         Go out
                                     </DropdownLink>
                                 </template>
                             </Dropdown>
                         </div>
                         <template v-else>
-                            <NavLink v-if="true"
+                            <NavLink v-if="!isAuthenticated()"
                                      href="/register"
-                                     :active="isActive('register')"
+                                     :active="isRoute('register')"
                                      class="nav-link nav-link--white">
                                 Sign up
                             </NavLink>
-                            <NavLink v-if="true"
-                                     :active="isActive('login')"
-                                     href="/login"
+                            <NavLink v-if="!isAuthenticated()"
+                                     :active="isRoute('login')"
+                                     :href="route('login')"
                                      class="nav-link nav-link--white">
                                 <span
                                     class="mr-1"
@@ -144,16 +143,16 @@ function logout() {
                 class="md:hidden"
             >
                 <div class="pt-2 pb-3 space-y-1">
-                    <ResponsiveNavLink href="/" :active="isActive('/')">
+                    <ResponsiveNavLink href="/" :active="isRoute('/')">
                         Home
                     </ResponsiveNavLink>
                     <ResponsiveNavLink v-if="true"
-                                       :active="isActive('register')"
+                                       :active="isRoute('register')"
                                        href="register">
                         Register
                     </ResponsiveNavLink>
                     <ResponsiveNavLink v-if="true"
-                                       :active="isActive('login')"
+                                       :active="isRoute('login')"
                                        href="login">
                                 <span
                                     class="mr-1"
@@ -166,9 +165,9 @@ function logout() {
                 <div v-if="false" class="pt-4 pb-1 border-t border-gray-800">
                     <div class="px-4">
                         <div class="font-medium text-white">
-                            Vasia name
+                            {{ authUser()?.name }}
                         </div>
-                        <div class="font-medium text-sm text-gray-400"> vasia@email.com </div>
+                        <div class="font-medium text-sm text-gray-400"> {{ authUser()?.email }}</div>
                     </div>
 
                     <div class="mt-3 space-y-1">

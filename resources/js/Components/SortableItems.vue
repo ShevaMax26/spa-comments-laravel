@@ -48,7 +48,7 @@ function pushActiveLabel(activeLabelSlug) {
 
 </script>
 <template>
-    <div class="flex gap-3 items-center justify-around bg-zinc-200 p-2 sm:w-[75%] md:w-[70%] lg:w-[60%] mx-auto">
+    <div class="flex mb-6 gap-3 items-center justify-start p-2 first:pl-0">
         <SortableItem
             v-for="label in sortableLabels"
             :name="label.name"

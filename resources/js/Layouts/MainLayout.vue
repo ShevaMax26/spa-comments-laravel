@@ -1,7 +1,6 @@
 <script setup>
 import Header from "./Header.vue";
-import Footer from "./Footer.vue";
-</script>
+import Footer from "./Footer.vue";</script>
 
 <template>
     <div class="main-wrapper min-h-screen mx-auto">

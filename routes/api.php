@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Comment\CommentController;
+use App\Http\Controllers\Question\QuestionController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -26,6 +27,9 @@ Route::middleware('guest')->group(function () {
     Route::post('register', [RegisterController::class, 'register'])->name('register');
     Route::post('login', [LoginController::class, 'login'])->name('login');
 });
+
+Route::resource('questions', QuestionController::class)
+    ->only(['index', 'store', 'show']);
 
 Route::resource('comments', CommentController::class)
     ->only(['index', 'store', 'show']);

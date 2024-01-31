@@ -1,46 +1,53 @@
 <script setup>
-import Comment from "../Components/Comment.vue";
-import ContentWrapper from "../Components/ContentWrapper.vue";
+import Comment from "@/Components/Comment.vue"; //Замість "../Components/Comment.vue";
+import ContentWrapper from "@/Components/ContentWrapper.vue";
 import {onMounted, ref} from 'vue'
-import SortableItems from "../Components/SortableItems.vue";
-import Pagination from "../Components/Pagination.vue";
-import PerPageItems from "../Components/PerPageItems.vue";
+import SortableItems from "@/Components/SortableItems.vue";
+import Pagination from "@/Components/Pagination.vue";
+import PerPageItems from "@/Components/PerPageItems.vue";
+import PrimaryButton from "@/Components/PrimaryButton.vue";
+import SimpleLink from "@/Components/SimpleLink.vue";
+import useRoutes from "@/Сomposables/useRoutes.js";
 
-const comments = ref([]);
+const {route} = useRoutes();
+
+const questions = ref([]);
 const total = ref(0);
 const currentPage = ref(1);
-const currentPerPage = ref(25);
+const currentPerPage = ref(24);
 const sort = ref(null);
 const direction = ref(null);
-async function getComments() {
+
+async function getQuestions() {
     try {
         replaceParamInUrl()
-        const res = await axios.get(`/api/comments`, {
+        const res = await axios.get(`/api/questions`, {
             params: {
                 sort: sort.value,
                 direction: direction.value,
                 page: currentPage.value,
                 perPage: currentPerPage.value,
-            }
+            },
         });
-        comments.value = res.data.comments;
+        questions.value = res.data.questions;
         total.value = parseInt(res.data.total);
         currentPerPage.value = parseInt(res.data.perPage);
         currentPage.value = parseInt(res.data.currentPage);
-
     } catch (error) {
-        console.error('Error fetching comments:', error);
+        console.error('Error fetching questions:', error);
     }
 }
+
 
 function changePerPage(perPage) {
     currentPage.value = 1;
     currentPerPage.value = perPage;
-    getComments()
+    getQuestions()
 }
+
 function showNewPage(page) {
     currentPage.value = page
-    getComments()
+    getQuestions()
 }
 
 function replaceParamInUrl() {
@@ -65,23 +72,38 @@ function replaceParamInUrl() {
 }
 
 onMounted(() => {
-    getComments();
+    getQuestions();
 });
 
 function applySortField(activeLabel) {
     sort.value = activeLabel.slug;
     direction.value = activeLabel.direction;
-    getComments()
+    getQuestions()
 }
 
 </script>
 
 <template>
     <ContentWrapper>
-        <SortableItems
-            @sort-changed="applySortField"
-        />
-        <Comment v-for="comment in comments" :comment="comment" :key="comment.id"/>
+        <div class="flex items-center justify-between">
+            <SortableItems
+                @sort-changed="applySortField"
+            />
+            <SimpleLink
+                :href="route('create-question')"
+            >
+                <PrimaryButton>
+                    Ask Question
+                </PrimaryButton>
+            </SimpleLink>
+        </div>
+
+        <div class="px-4 mx-auto max-w-screen-xl mb-6">
+            <div class="grid gap-12 sm:grid-cols-2 lg:grid-cols-4">
+                <Comment v-for="question in questions" :question="question" :key="question.id"/>
+            </div>
+        </div>
+
         <div class="flex justify-around">
             <Pagination :current-per-page="currentPerPage"
                         :total="total"

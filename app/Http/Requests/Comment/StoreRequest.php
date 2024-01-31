@@ -2,16 +2,16 @@
 
 namespace App\Http\Requests\Comment;
 
+use App\Models\Comment;
+use App\Models\Question;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
     public function authorize(): bool
     {
-        return true;
+        return $this->user() !== null;
     }
 
     /**
@@ -22,7 +22,16 @@ class StoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'parent_id' => ['nullable', 'integer', 'exists:comments,id'],
+            'parent_id' => [
+                'nullable',
+                'integer',
+                Rule::exists(Comment::class, 'id')
+            ],
+            'question_id' => [
+                'required',
+                'numeric',
+                Rule::exists(Question::class, 'id')
+            ],
             'message' => ['required', 'string'],
             'image' => [
                 'nullable',

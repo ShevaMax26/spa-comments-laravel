@@ -11,11 +11,6 @@ use Illuminate\Http\Request;
 
 class CommentController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth:sanctum')->only('store');
-    }
-
     public function index(Request $request)
     {
         $q = Comment::query()
@@ -48,7 +43,9 @@ class CommentController extends Controller
 
     public function store(StoreRequest $request)
     {
-        return CommentResource::make(app(CreateComment::class)->handle($request->validated()));
+        return CommentResource::make(app(CreateComment::class)->handle(
+            $request->validated(),
+            auth('sanctum')->user()));
     }
 
     public function answers(Comment $comment)
@@ -60,7 +57,10 @@ class CommentController extends Controller
     {
         return CommentResource::make(
             $comment
-                ->load(['children' => fn ($q) => $q->withCount('children')])
+                ->load([
+                    'children' => fn($q) => $q->withCount('children'),
+                    'user'
+                ])
         );
     }
 }

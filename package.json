@@ -8,6 +8,7 @@
     "devDependencies": {
         "@popperjs/core": "^2.11.6",
         "@vitejs/plugin-vue": "^4.5.0",
+        "@vue/cli-service": "^5.0.8",
         "autoprefixer": "^10.4.17",
         "axios": "^1.6.4",
         "bootstrap": "^5.2.3",
@@ -19,7 +20,6 @@
         "vue": "^3.2.37"
     },
     "dependencies": {
-        "vue-router": "^4.2.5",
-        "vuex": "^4.0.2"
+        "vue-router": "^4.2.5"
     }
 }

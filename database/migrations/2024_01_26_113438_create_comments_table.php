@@ -17,12 +17,16 @@ return new class extends Migration
                 ->constrained()
                 ->cascadeOnDelete()
                 ->cascadeOnUpdate();
+            $table->foreignIdFor(\App\Models\Question::class)
+                ->constrained()
+                ->cascadeOnDelete()
+                ->cascadeOnUpdate();
             $table->foreignId('parent_id')
                 ->nullable()
                 ->constrained('comments')
                 ->cascadeOnDelete()
                 ->cascadeOnUpdate();
-            $table->text('message');
+            $table->longText('message');
             $table->timestamps();
         });
     }

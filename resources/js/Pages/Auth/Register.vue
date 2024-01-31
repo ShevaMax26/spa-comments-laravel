@@ -1,28 +1,37 @@
 <script setup>
-import TextInput from "../../Components/TextInput.vue";
-import InputError from "../../Components/InputError.vue";
-import PrimaryButton from "../../Components/PrimaryButton.vue";
-import SimpleLink from "../../Components/SimpleLink.vue";
-import InputLabel from "../../Components/InputLabel.vue";
-import router from "../../routes.js";
+import TextInput from "@/Components/TextInput.vue";
+import InputError from "@/Components/InputError.vue";
+import PrimaryButton from "@/Components/PrimaryButton.vue";
+import SimpleLink from "@/Components/SimpleLink.vue";
+import InputLabel from "@/Components/InputLabel.vue";
+import useAuth from "@/Сomposables/useAuth";
+import useRoutes from "@/Сomposables/useRoutes";
 
-const user = {
+const {login} = useAuth();
+const {redirectTo} = useRoutes();
+
+
+const form = {
     name: '',
     email: '',
     password: '',
     password_confirmation: '',
 };
 
+const loginUser = (token, user) => {
+    login(token, user);
+    redirectTo('home')
+}
+
 const submit = () => {
     axios.post('/api/register', {
-        name: user.name,
-        email: user.email,
-        password: user.password,
-        password_confirmation: user.password_confirmation
+        name: form.name,
+        email: form.email,
+        password: form.password,
+        password_confirmation: form.password_confirmation
     })
         .then(res => {
-            localStorage.setItem('token', res.data.token)
-            router.push('/')
+            loginUser(res.data.token, res.data.user)
         })
         .catch(error => {
             console.log(error)
@@ -41,7 +50,7 @@ const submit = () => {
                         id="name"
                         type="text"
                         class="mt-1 block w-full"
-                        v-model="user.name"
+                        v-model="form.name"
                         required
                         autofocus
                         autocomplete="name"
@@ -57,7 +66,7 @@ const submit = () => {
                         id="email"
                         type="email"
                         class="mt-1 block w-full"
-                        v-model="user.email"
+                        v-model="form.email"
                         required
                         autocomplete="username"
                     />
@@ -72,7 +81,7 @@ const submit = () => {
                         id="password"
                         type="password"
                         class="mt-1 block w-full"
-                        v-model="user.password"
+                        v-model="form.password"
                         required
                         autocomplete="new-password"
                     />
@@ -87,7 +96,7 @@ const submit = () => {
                         id="password_confirmation"
                         type="password"
                         class="mt-1 block w-full"
-                        v-model="user.password_confirmation"
+                        v-model="form.password_confirmation"
                         required
                         autocomplete="new-password"
                     />

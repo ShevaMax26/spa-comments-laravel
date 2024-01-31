@@ -6,23 +6,15 @@ const emit = defineEmits(['pushPerPage']);
 
 const perPageValues = ref([
     {
-        number: 5,
+        number: 4,
         active: false,
     },
     {
-        number: 10,
+        number: 16,
         active: false,
     },
     {
-        number: 15,
-        active: false,
-    },
-    {
-        number: 25,
-        active: false,
-    },
-    {
-        number: 50,
+        number: 24,
         active: false,
     },
 ]);
@@ -37,8 +29,8 @@ function setPerPage(perPage) {
     })
 
     if (!perPageValues.value.filter((item) => item.active == true).length) {
-        perPageValues.value.forEach(item => {
-            if (item.number == 25) {
+        perPageValues.value = perPageValues.value.map(item => {
+            if (item.number == 16) {
                 item.active = true
             } else {
                 item.active = false

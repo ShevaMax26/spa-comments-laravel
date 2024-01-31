@@ -21,7 +21,7 @@ const classes = computed(() =>
 
 <template>
     <SimpleLink :href="href"
-        :class="classes">
+                :class="classes">
         <slot/>
     </SimpleLink>
 </template>

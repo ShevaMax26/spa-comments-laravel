@@ -12,10 +12,12 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class Comment extends Model implements HasMedia
 {
-    use HasFactory, InteractsWithMedia;
+    use HasFactory;
+    use InteractsWithMedia;
 
     protected $fillable = [
         'user_id',
+        'question_id',
         'parent_id',
         'message',
     ];
@@ -23,6 +25,11 @@ class Comment extends Model implements HasMedia
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function question(): BelongsTo
+    {
+        return $this->belongsTo(Question::class);
     }
 
     public function children(): HasMany

@@ -1,5 +1,5 @@
 <script setup>
-import { computed } from 'vue';
+import {computed} from 'vue';
 import SimpleLink from "./SimpleLink.vue";
 
 const props = defineProps({
@@ -21,6 +21,6 @@ const classes = computed(() =>
 
 <template>
     <SimpleLink :href="href" :class="classes">
-        <slot />
+        <slot/>
     </SimpleLink>
 </template>

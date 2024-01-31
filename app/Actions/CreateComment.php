@@ -2,25 +2,15 @@
 
 namespace App\Actions;
 
-use App\Models\Comment;
+use App\Models\User;
 
 class CreateComment
 {
-    public function handle(array $data)
+    public function handle(array $data, User $user)
     {
-        if (!isset($data['parent_id'])) {
-            $comment = Comment::query()->create([
-                'user_id' => auth('sanctum')->user()->id,
-                'message' => CheckCommentHtml::check($data['message']),
-            ]);
-        } else {
-            $parentComment = Comment::query()->findOrFail($data['parent_id']);
+        $data['user_id'] = $user->id;
 
-            $comment = $parentComment->children()->create([
-                'user_id' => auth('sanctum')->user()->id,
-                'message' => CheckCommentHtml::check($data['message']),
-            ]);
-        }
+        $comment = $user->comments()->create($data);
 
         if (isset($data['image'])) {
             $comment->addMedia($data['image'])->toMediaCollection('images');

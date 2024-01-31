@@ -56,11 +56,13 @@ const classes = computed(() =>
     background: #F53B49;
     width: 18px;
     height: 18px;
+
     .count {
         color: white;
         font-size: 10px;
     }
 }
+
 .nav-link_active {
     display: flex;
     align-items: flex-start;

@@ -1,8 +1,12 @@
 ## <h2 style="color:#ba363f">Installation</h2>
 ``` 
     composer install
-    php artisan migrate
-    php artisan db:seed
+    php artisan app:install
+```
+
+## Refresh data
+``` 
+    php artisan app:refresh
 ```
 
 

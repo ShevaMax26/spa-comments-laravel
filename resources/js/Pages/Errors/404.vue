@@ -1,5 +1,5 @@
 <script setup>
-import ContentWrapper from "../../Components/ContentWrapper.vue";</script>
+import ContentWrapper from "@/Components/ContentWrapper.vue";</script>
 
 <template>
     <ContentWrapper>
